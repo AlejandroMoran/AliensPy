@@ -238,6 +238,7 @@ while True:
             Juego = False
             Fin = True
             puntos=PuntuacionModelo("",cronometro_modelo.tiempoVivo)
+            hs = False
 
         # Agregamos un alien cada 10 segundos
         if len(Aliens)-1 < int(cronometro_modelo.tiempoVivo/10) and len(Aliens)<10:
@@ -326,7 +327,6 @@ while True:
                         textos_salon = cargarSalon()
                         Inicio = True
                         Fin = False
-                        hs = False
                         cronometro_modelo.tiempoVivo = 0
                     else:
                         puntos.nombre="Anonimo"
@@ -335,7 +335,6 @@ while True:
                         textos_salon = cargarSalon()
                         Inicio = True
                         Fin = False
-                        hs = False
                         cronometro_modelo.tiempoVivo = 0
 
             if evento.type == pygame.KEYDOWN:
@@ -348,9 +347,7 @@ while True:
                         textos_salon = cargarSalon()
                         Inicio = True
                         Fin = False
-                        hs = False
                         cronometro_modelo.tiempoVivo = 0
-
                 else:
                     puntos.nombre += evento.unicode
 
