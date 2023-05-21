@@ -17,13 +17,13 @@ class RobotControlador:
 
         # Mueve el modelo según las teclas presionadas
         if teclas[pygame.K_RIGHT]:
-            modelo.x += modelo.pixelporseg*(delta_tiempo/1000)
+            modelo.x += int(modelo.pixelporseg*(delta_tiempo/1000))
         elif teclas[pygame.K_LEFT]:
-            modelo.x -= modelo.pixelporseg*(delta_tiempo/1000)
+            modelo.x -= int(modelo.pixelporseg*(delta_tiempo/1000))
         elif teclas[pygame.K_UP]:
-            modelo.y -= modelo.pixelporseg*(delta_tiempo/1000)
+            modelo.y -= int(modelo.pixelporseg*(delta_tiempo/1000))
         elif teclas[pygame.K_DOWN]:
-            modelo.y += modelo.pixelporseg*(delta_tiempo/1000)
+            modelo.y += int(modelo.pixelporseg*(delta_tiempo/1000))
 
         # Limita el movimiento del modelo dentro de la pantalla
         if modelo.x <= 0:

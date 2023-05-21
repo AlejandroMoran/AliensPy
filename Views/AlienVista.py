@@ -1,8 +1,9 @@
 import pygame
-from Models.RobotModelo import RobotModelo  # importa la clase RobotModelo desde el archivo RobotModelo.py
+import sys
+from Models.AlienModelo import AlienModelo  # importa la clase AlienModelo definida en AlienModelo.py
 
 
-class RobotVista:
+class AlienVista:
     # constructor, recibe una ruta de imagen como argumento
     def __init__(self, ruta_imagen):
         self.imagen = pygame.image.load(ruta_imagen)  # carga la imagen en memoria
