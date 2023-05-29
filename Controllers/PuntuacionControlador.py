@@ -1,14 +1,17 @@
-import csv
+import json
+import urllib.request
 from Models.PuntuacionModelo import PuntuacionModelo
 class PuntuacionControlador:
     def __init__(self, archivo):
         self.puntuaciones = []
-        self.archivo = archivo
-        with open(archivo, newline='') as archivo_csv:
-            lector_csv = csv.reader(archivo_csv, delimiter=',')
-            for fila in lector_csv:
-                self.puntuaciones.append(PuntuacionModelo(fila[0],fila[1]))
-            archivo_csv.close()
+        self.URL="https://inconclusive-quiet-bittersweet.glitch.me/"
+        get = urllib.request.Request(self.URL)
+        response = urllib.request.urlopen(get)
+        lector = response.read().decode('utf8').split("\n")
+        for row in lector:
+            fila = row.split(",")
+            self.puntuaciones.append(PuntuacionModelo(fila[0],fila[1]))
+
     def CalcularPuntuacion(self, nuevaPuntuacion):
         for puntuacion in self.puntuaciones:
             if nuevaPuntuacion.tiempoVivo > int(puntuacion.tiempoVivo):
@@ -21,10 +24,17 @@ class PuntuacionControlador:
                     self.puntuaciones[i+1:] = self.puntuaciones[i:len(self.puntuaciones)-1]
                 self.puntuaciones[i] = nuevaPuntuacion
                 break
-        with open(self.archivo, mode='w', newline='') as archivo_csv:
-            fieldnames = ['nombre', 'puntos']
-            writer = csv.DictWriter(archivo_csv, fieldnames=fieldnames)
-            for puntuacion in self.puntuaciones:
-                registro={'nombre':puntuacion.nombre, 'puntos':puntuacion.tiempoVivo}
-                writer.writerow(registro)
-            archivo_csv.close()
+        datos = ""
+        for puntuacion in self.puntuaciones:
+            datos += f"{puntuacion.nombre},{puntuacion.tiempoVivo}\n"
+        datos = datos.strip()
+
+        body = {
+            "data" : datos
+        }
+        post = urllib.request.Request(self.URL)
+        post.add_header('Content-Type', 'application/json; charset=utf-8')
+        jsondata = json.dumps(body)
+        jsondataasbytes = jsondata.encode('utf-8')
+        post.add_header('Content-Length', len(jsondataasbytes))
+        response = urllib.request.urlopen(post, jsondataasbytes)
