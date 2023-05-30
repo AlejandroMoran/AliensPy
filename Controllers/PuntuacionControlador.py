@@ -2,9 +2,9 @@ import json
 import urllib.request
 from Models.PuntuacionModelo import PuntuacionModelo
 class PuntuacionControlador:
-    def __init__(self, archivo):
+    def __init__(self, url):
         self.puntuaciones = []
-        self.URL="https://inconclusive-quiet-bittersweet.glitch.me/"
+        self.URL=url
         get = urllib.request.Request(self.URL)
         response = urllib.request.urlopen(get)
         lector = response.read().decode('utf8').split("\n")

@@ -3,6 +3,7 @@ import pygame
 import sys
 import os
 import random
+import threading
 # Importamos los modelos, vistas y controladores creados para el juego
 from Models.PuntuacionModelo import PuntuacionModelo
 from Models.RobotModelo import RobotModelo
@@ -70,8 +71,22 @@ def generarAlien():
     alien_modelo = AlienModelo(x, y, 0, 200)
     return alien(alien_modelo, alien_vista, alien_controlador)
 
-def cargarSalon():
-    puntos_controlador = PuntuacionControlador('Media/Puntuacion.csv')
+#def cargarSalon():
+    #puntos_controlador = PuntuacionControlador('Media/Puntuacion.csv')
+    #textoPrimero = font.render(f'1. {puntos_controlador.puntuaciones[0].nombre}' , True , (255, 215, 0))
+    #textoPrimero_area = textoPrimero.get_rect()
+    #textoPrimero_area.center = (640/2,200)
+    #textoSegundo = font.render(f'2. {puntos_controlador.puntuaciones[1].nombre}' , True , (192,192,192))
+    #textoSegundo_area = textoSegundo.get_rect()
+    #textoSegundo_area.center = (640/2,250)
+    #textoTercero = font.render(f'3. {puntos_controlador.puntuaciones[2].nombre}' , True , (205, 127, 50))
+    #textoTercero_area = textoTercero.get_rect()
+    #textoTercero_area.center = (640/2, 300)
+    #return [[textoPrimero,textoPrimero_area], [textoSegundo,textoSegundo_area],[textoTercero,textoTercero_area]]
+
+def cargarPuntos():
+    global textos_salon, puntos_controlador
+    puntos_controlador = PuntuacionControlador('https://inconclusive-quiet-bittersweet.glitch.me/')
     textoPrimero = font.render(f'1. {puntos_controlador.puntuaciones[0].nombre}' , True , (255, 215, 0))
     textoPrimero_area = textoPrimero.get_rect()
     textoPrimero_area.center = (640/2,200)
@@ -81,9 +96,11 @@ def cargarSalon():
     textoTercero = font.render(f'3. {puntos_controlador.puntuaciones[2].nombre}' , True , (205, 127, 50))
     textoTercero_area = textoTercero.get_rect()
     textoTercero_area.center = (640/2, 300)
-    return [[textoPrimero,textoPrimero_area], [textoSegundo,textoSegundo_area],[textoTercero,textoTercero_area]]
+    textos_salon = [[textoPrimero,textoPrimero_area], [textoSegundo,textoSegundo_area],[textoTercero,textoTercero_area]]
 
 
+t1 = threading.Thread(target=cargarPuntos)
+t1.start()
 #Obtenemos el directorio de la aplicacion
 dir = sys.path[0]
 # Inicializamos Pygame
@@ -102,7 +119,6 @@ robot_controlador = RobotControlador()
 # Creamos la vista del radar
 radar_vista = RadarVista(os.path.join(dir, 'Media/Images/radar.png'), os.path.join(dir, 'Media/Images/blip.png'))
 Aliens = []
-#Aliens.append(generarAlien())
 # Creamos un evento que sucede cada segundo (1000 ms)
 TIMEEVENT = pygame.USEREVENT+1
 pygame.time.set_timer(TIMEEVENT, 1000)
@@ -162,10 +178,8 @@ textoIngresa = font.render('Ingresa tu nombre:' , True , (255,255,255))
 textoIngresa_area = textoIngresa.get_rect()
 textoIngresa_area.topright = (inputRec.left-2,inputRec.top+2)
 
-textos_salon = cargarSalon()
-puntos_controlador = PuntuacionControlador('Media/Puntuacion.csv')
-
-
+reloj.tick(30)
+reloj.tick(30)
 while True:
     if Inicio:
         pixelArt("ALIEN")
@@ -183,6 +197,7 @@ while True:
                     Aliens = []
                     Aliens.append(generarAlien())
                 elif botonSalon.collidepoint(mouse):
+                    t1.join()
                     Inicio = False
                     Puntuaciones = True
         #Se obtiene la posicion del mouse
@@ -323,16 +338,18 @@ while True:
                 if botonEnviar.collidepoint(mouse):
                     if puntos.nombre != "":
                         puntos_controlador.EscribirPuntuacion(puntos)
-                        puntos_controlador = PuntuacionControlador('Media/Puntuacion.csv')
-                        textos_salon = cargarSalon()
+                        cargarPuntos()
+                        #puntos_controlador = PuntuacionControlador('Media/Puntuacion.csv')
+                        #textos_salon = cargarSalon()
                         Inicio = True
                         Fin = False
                         cronometro_modelo.tiempoVivo = 0
                     else:
                         puntos.nombre="Anonimo"
                         puntos_controlador.EscribirPuntuacion(puntos)
-                        puntos_controlador = PuntuacionControlador('Media/Puntuacion.csv')
-                        textos_salon = cargarSalon()
+                        cargarPuntos()
+                        #puntos_controlador = PuntuacionControlador('Media/Puntuacion.csv')
+                        #textos_salon = cargarSalon()
                         Inicio = True
                         Fin = False
                         cronometro_modelo.tiempoVivo = 0
@@ -343,8 +360,9 @@ while True:
                 elif evento.key == pygame.K_RETURN:
                     if puntos.nombre != "":
                         puntos_controlador.EscribirPuntuacion(puntos)
-                        puntos_controlador = PuntuacionControlador('Media/Puntuacion.csv')
-                        textos_salon = cargarSalon()
+                        cargarPuntos()
+                        #puntos_controlador = PuntuacionControlador('Media/Puntuacion.csv')
+                        #textos_salon = cargarSalon()
                         Inicio = True
                         Fin = False
                         cronometro_modelo.tiempoVivo = 0
