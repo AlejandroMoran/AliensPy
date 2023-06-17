@@ -1,6 +1,4 @@
 import pygame
-import sys
-from Models.AlienModelo import AlienModelo  # importa la clase AlienModelo definida en AlienModelo.py
 
 
 class AlienVista:

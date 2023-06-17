@@ -1,5 +1,4 @@
 import pygame
-from Models.RobotModelo import RobotModelo  # importa la clase RobotModelo definida en RobotModelo.py
 
 
 class RadarVista:
@@ -12,7 +11,7 @@ class RadarVista:
     def dibujar(self, pantalla, modelo, Aliens):
         pantalla.blit(self.imagen_radar, (0, 0))
         for a in Aliens:
-            pygame.draw.rect(pantalla, (255,0,0), (pygame.Rect((a.modelo.get_posicion()[0]/10)+1, (a.modelo.get_posicion()[1]/10)+1, 3, 3)))
+            pygame.draw.rect(pantalla, (255, 0, 0), (pygame.Rect((a.modelo.get_posicion()[0]/10)+1, (a.modelo.get_posicion()[1]/10)+1, 3, 3)))
         x = (modelo.x / 10.0) + 1  # convierte la posición x del robot a una posición en el radar
         y = (modelo.y / 10.0) + 1  # convierte la posición y del robot a una posición en el radar
         pantalla.blit(self.imagen_blip, (x, y))

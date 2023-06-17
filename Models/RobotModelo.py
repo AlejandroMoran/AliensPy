@@ -7,6 +7,7 @@ class RobotModelo:
         self.frame = 0
         self.temporizador = tiempo_reiniciador_temporizador
         self.pixelporseg = 200
+
     def get_posicion(self):
         # Devuelve la posición actual del robot
-        return (self.x,self.y)
+        return (self.x, self.y)

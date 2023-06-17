@@ -1,11 +1,10 @@
-import pygame
 import math
-from Models.AlienModelo import AlienModelo
 
 
 class AlienControlador:
     def calcularDistancia(self, objetivo, posicion):
         return math.sqrt((objetivo[0]-posicion[0]) ** 2 + (objetivo[1]-posicion[1]) ** 2)
+
     def actualizar(self, delta_tiempo, modelo, objetivo):
         # Actualiza el reloj del modelo
         modelo.cronometro = modelo.get_cronometro() + delta_tiempo
@@ -49,8 +48,3 @@ class AlienControlador:
         if not modelo.seguir:
             modelo.x += modelo.direccionx*(delta_tiempo/1000)
             modelo.y += modelo.direcciony*(delta_tiempo/1000)
-
-
-
-
-

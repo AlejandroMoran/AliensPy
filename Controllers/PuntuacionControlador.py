@@ -1,26 +1,29 @@
 import json
 import urllib.request
 from Models.PuntuacionModelo import PuntuacionModelo
+
+
 class PuntuacionControlador:
     def __init__(self, url):
         self.puntuaciones = []
-        self.URL=url
+        self.URL = url
         get = urllib.request.Request(self.URL)
         response = urllib.request.urlopen(get)
         lector = response.read().decode('utf8').split("\n")
         for row in lector:
             fila = row.split(",")
-            self.puntuaciones.append(PuntuacionModelo(fila[0],fila[1]))
+            self.puntuaciones.append(PuntuacionModelo(fila[0], fila[1]))
 
     def CalcularPuntuacion(self, nuevaPuntuacion):
         for puntuacion in self.puntuaciones:
             if nuevaPuntuacion.tiempoVivo > int(puntuacion.tiempoVivo):
                 return True
         return False
+
     def EscribirPuntuacion(self, nuevaPuntuacion):
         for i in range(len(self.puntuaciones)):
             if nuevaPuntuacion.tiempoVivo > int(self.puntuaciones[i].tiempoVivo):
-                if i<2:
+                if i < 2:
                     self.puntuaciones[i+1:] = self.puntuaciones[i:len(self.puntuaciones)-1]
                 self.puntuaciones[i] = nuevaPuntuacion
                 break
@@ -30,7 +33,7 @@ class PuntuacionControlador:
         datos = datos.strip()
 
         body = {
-            "data" : datos
+            "data": datos
         }
         post = urllib.request.Request(self.URL)
         post.add_header('Content-Type', 'application/json; charset=utf-8')

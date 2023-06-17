@@ -1,5 +1,4 @@
 import pygame
-from Models.RobotModelo import RobotModelo  # importa la clase RobotModelo desde el archivo RobotModelo.py
 
 
 class RobotVista:
